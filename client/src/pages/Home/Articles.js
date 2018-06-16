@@ -16,11 +16,11 @@ class Articles extends Component {
   //   this.loadBooks();
   // }
 
-  // loadBooks = () => {
-  //   API.getBooks()
-  //     .then(res => this.setState({ books: res.data }))
-  //     .catch(err => console.log(err));
-  // };
+  loadArticles = () => {
+    API.getArticles()
+      .then(res => this.setState({ articles: res.data }))
+      .catch(err => console.log(err));
+  };
 
   render() {
     return (
