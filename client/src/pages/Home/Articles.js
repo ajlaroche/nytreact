@@ -1,66 +1,58 @@
 import React, { Component } from "react";
 import Jumbotron from "../../components/Jumbotron";
 import API from "../../utils/API";
-import DeleteBtn from "../../components/DeleteBtn";
+import SaveBtn from "../../components/SaveBtn";
 import { Col, Row, Container } from "../../components/Grid";
-import { List, ListItem } from "../../components/List";
 import { Input, TextArea, FormBtn } from "../../components/Form";
+import "./Articles.css"
+import Card from "../../components/Card";
 
-class Books extends Component {
+class Articles extends Component {
   state = {
-    books: []
+    articles: []
   };
 
-  componentDidMount() {
-    this.loadBooks();
-  }
+  // componentDidMount() {
+  //   this.loadBooks();
+  // }
 
-  loadBooks = () => {
-    API.getBooks()
-      .then(res => this.setState({ books: res.data }))
-      .catch(err => console.log(err));
-  };
+  // loadBooks = () => {
+  //   API.getBooks()
+  //     .then(res => this.setState({ books: res.data }))
+  //     .catch(err => console.log(err));
+  // };
 
   render() {
     return (
       <Container fluid>
-        <Row>
-          <Col size="md-6">
-            <Jumbotron>
-              <h1>What Books Should I Read?</h1>
-            </Jumbotron>
+        <Jumbotron>
+          <h1><u>New York Times Article Scrubber</u></h1>
+          <h3>Search for and Annotate Articles of Interest</h3>
+        </Jumbotron>
+        <Card header="Search">
+          <Container fluid>
             <form>
+              <label>Title</label>
               <Input name="title" placeholder="Title (required)" />
-              <Input name="author" placeholder="Author (required)" />
-              <TextArea name="synopsis" placeholder="Synopsis (Optional)" />
-              <FormBtn>Submit Book</FormBtn>
+              <label>Start Year</label>
+              <Input name="startYear" placeholder="Start Year (required)" />
+              <label>End Year</label>
+              <Input name="endYear" placeholder="End Year (required)" />
+              <FormBtn>Search</FormBtn>
             </form>
-          </Col>
-          <Col size="md-6 sm-12">
-            <Jumbotron>
-              <h1>Books On My List</h1>
-            </Jumbotron>
-            {this.state.books.length ? (
-              <List>
-                {this.state.books.map(book => (
-                  <ListItem key={book._id}>
-                    <a href={"/books/" + book._id}>
-                      <strong>
-                        {book.title} by {book.author}
-                      </strong>
-                    </a>
-                    <DeleteBtn />
-                  </ListItem>
-                ))}
-              </List>
-            ) : (
-              <h3>No Results to Display</h3>
-            )}
-          </Col>
-        </Row>
+          </Container>
+        </Card>
+        <Card header="Results">
+          <Container fluid>
+            <ul className="list-group list-group-flush">
+              {/* Wrap this li component in map function for each article found and pass the article ids to save button */}
+              <li className="list-group-item">Cras justo odio <SaveBtn> Save </SaveBtn></li>
+            </ul>
+          </Container>
+        </Card>
       </Container>
     );
   }
 }
 
-export default Books;
+export default Articles;
