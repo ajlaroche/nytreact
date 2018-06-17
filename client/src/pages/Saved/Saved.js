@@ -26,7 +26,7 @@ class Saved extends Component {
       <Container fluid>
        <Card header="Saved Articles">
           <Container fluid>
-            <ul className="list-group list-group-flush">
+            <ul className="list-group">
               {/* Wrap this li component in map function for each article found and pass the article ids to save button */}
               <li className="list-group-item">Cras justo odio <DeleteBtn/></li>
             </ul>

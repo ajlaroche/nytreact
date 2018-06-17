@@ -9,21 +9,23 @@ import Card from "../../components/Card";
 
 class Articles extends Component {
   state = {
-    searchTerm:"",
-    startYear:"",
-    endYear:"",
+    searchTerm: "",
+    startYear: "",
+    endYear: "",
     articles: []
   };
 
-  componentDidMount() {
-    this.loadArticles();
-  }
+  // componentDidMount() {
+  //   this.loadArticles();
+  // }
 
-  loadArticles = () => {
-    API.getArticles()
-      .then(res => this.setState({ articles: res.data }))
-      .catch(err => console.log(err));
-  };
+  // loadArticles = () => {
+  //   if (this.state.searchTerm && this.state.startYear && this.state.endYear) {
+  //     API.getArticles(this.state.searchTerm, this.state.startYear, this.state.endYear)
+  //       .then(res => this.setState({ articles: res.data }))
+  //       .catch(err => console.log(err));
+  //   };
+  // }
 
   handleInputChange = event => {
     const { name, value } = event.target;
@@ -36,9 +38,12 @@ class Articles extends Component {
     event.preventDefault();
     if (this.state.searchTerm && this.state.startYear && this.state.endYear) {
       API.getArticles(this.state.searchTerm, this.state.startYear, this.state.endYear)
-        .then(res => this.loadArticles())
+        .then(res => {
+          console.log(res.data);
+          this.setState({ articles: res.data.response.docs })
+        })
         .catch(err => console.log(err));
-    }
+    };
   };
 
   render() {
@@ -52,45 +57,44 @@ class Articles extends Component {
           <Container fluid>
             <form>
               <label>Title</label>
-              <Input 
-              value={this.state.searchTerm}
-              onChange={this.handleInputChange}
-              type="text"
-              name="searchTerm" 
-              placeholder="searchTerm (required)"
+              <Input
+                value={this.state.searchTerm}
+                onChange={this.handleInputChange}
+                type="text"
+                name="searchTerm"
+                placeholder="searchTerm (required)"
               />
               <label>Start Year</label>
               <Input
-              value={this.state.startYear}
-              onChange={this.handleInputChange}
-              type="text"
-              name="startYear" 
-              placeholder="Start Year (required)"
+                value={this.state.startYear}
+                onChange={this.handleInputChange}
+                type="text"
+                name="startYear"
+                placeholder="Start Year (required)"
               />
               <label>End Year</label>
-              <Input 
-              value={this.state.endYear}
-              onChange={this.handleInputChange}
-              type="text"
-              name="endYear" 
-              placeholder="End Year (required)"
+              <Input
+                value={this.state.endYear}
+                onChange={this.handleInputChange}
+                type="text"
+                name="endYear"
+                placeholder="End Year (required)"
               />
               <FormBtn
-              disabled={!(this.state.searchTerm && this.state.startYear && this.state.endYear)}
-              onClick={this.handleFormSubmit}
+                disabled={!(this.state.searchTerm && this.state.startYear && this.state.endYear)}
+                onClick={this.handleFormSubmit}
               >
-              Search
+                Search
               </FormBtn>
             </form>
           </Container>
         </Card>
         <Card header="Results">
           <Container fluid>
-            <ul className="list-group list-group-flush">
-              {/* Wrap this li component in map function for each article found and pass the article ids to save button */}
-              {this.state.articles.map(article =>(
-              <li className="list-group-item">{article.headline} <SaveBtn> Save </SaveBtn></li>
-            ))}
+            <ul className="list-group">
+              {this.state.articles.map((article, index) => (
+                <li className="list-group-item" key={index}><a href={article.web_url}>{article.headline.main}</a> <SaveBtn> Save </SaveBtn></li>
+              ))}
             </ul>
           </Container>
         </Card>
