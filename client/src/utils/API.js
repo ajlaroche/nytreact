@@ -1,20 +1,24 @@
 import axios from "axios";
 
 export default {
-  // Gets all books
-  getArticles: function(searchTerm, startYear, endYear) {
+  // Search for articles
+  searchArticles: function (searchTerm, startYear, endYear) {
     return axios.get(`/api/search/${searchTerm}/${startYear}/${endYear}`);
-     },
+  },
+  // Get all saved articles
+  getArticles: function () {
+    return axios.get("/api/articles");
+  },
   // Gets the book with the given id
-  getBook: function(id) {
+  getArticle: function (id) {
     return axios.get("/api/articles/" + id);
   },
   // Deletes the book with the given id
-  deleteBook: function(id) {
+  deleteArticle: function (id) {
     return axios.delete("/api/articles/" + id);
   },
   // Saves a book to the database
-  saveBook: function(articleData) {
+  saveArticle: function (articleData) {
     return axios.post("/api/articles", articleData);
   }
 };

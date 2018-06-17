@@ -18,8 +18,12 @@ module.exports = {
   create: function(req, res) {
     db.Article
       .create(req.body)
-      .then(dbModel => res.json(dbModel))
-      .catch(err => res.status(422).json(err));
+      .then(dbModel => {
+        console.log("article saved");
+        res.json(dbModel)})
+      .catch(err => {
+        console.log(err);
+        res.status(422).json(err)});
   },
   update: function(req, res) {
     db.Article

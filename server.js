@@ -4,6 +4,9 @@ const PORT = process.env.PORT || 3001;
 const app = express();
 const mongoose = require("mongoose");
 const routes = require("./routes");
+const logger = require("morgan");
+
+app.use(logger("dev"));
 
 // Define middleware here
 app.use(express.json());

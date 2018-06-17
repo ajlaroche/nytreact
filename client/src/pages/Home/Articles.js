@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import Jumbotron from "../../components/Jumbotron";
 import API from "../../utils/API";
 import SaveBtn from "../../components/SaveBtn";
-import { Col, Row, Container } from "../../components/Grid";
-import { Input, TextArea, FormBtn } from "../../components/Form";
+import { Container } from "../../components/Grid";
+import { Input, FormBtn } from "../../components/Form";
 import "./Articles.css"
 import Card from "../../components/Card";
 
@@ -15,17 +15,19 @@ class Articles extends Component {
     articles: []
   };
 
-  // componentDidMount() {
-  //   this.loadArticles();
-  // }
-
-  // loadArticles = () => {
-  //   if (this.state.searchTerm && this.state.startYear && this.state.endYear) {
-  //     API.getArticles(this.state.searchTerm, this.state.startYear, this.state.endYear)
-  //       .then(res => this.setState({ articles: res.data }))
-  //       .catch(err => console.log(err));
-  //   };
-  // }
+  
+  savedArticles = (event) => {
+    // console.log(event.target.getAttribute("data-headline"));
+    const articleData = {
+      headline: event.target.getAttribute("data-headline"),
+      data: event.target.getAttribute("data-date"),
+      url: event.target.getAttribute("data-url"),
+      snippet: event.target.getAttribute("data-snippet")
+    };
+    API.saveArticle(articleData)
+      .then(res => console.log("article saved"))
+      .catch(err => console.log(err));
+  }
 
   handleInputChange = event => {
     const { name, value } = event.target;
@@ -37,7 +39,7 @@ class Articles extends Component {
   handleFormSubmit = event => {
     event.preventDefault();
     if (this.state.searchTerm && this.state.startYear && this.state.endYear) {
-      API.getArticles(this.state.searchTerm, this.state.startYear, this.state.endYear)
+      API.searchArticles(this.state.searchTerm, this.state.startYear, this.state.endYear)
         .then(res => {
           console.log(res.data);
           this.setState({ articles: res.data.response.docs })
@@ -93,7 +95,15 @@ class Articles extends Component {
           <Container fluid>
             <ul className="list-group">
               {this.state.articles.map((article, index) => (
-                <li className="list-group-item" key={index}><a href={article.web_url}>{article.headline.main}</a> <SaveBtn> Save </SaveBtn></li>
+                <li className="list-group-item" key={index}><a href={article.web_url}>{article.headline.main}</a> <SaveBtn
+                  data-headline={article.headline.main}
+                  data-date={article.pub_date}
+                  data-url={article.web_url}
+                  data-snippet={article.snippet}
+                  onClick={this.savedArticles}
+                >
+                  Save
+                </SaveBtn></li>
               ))}
             </ul>
           </Container>

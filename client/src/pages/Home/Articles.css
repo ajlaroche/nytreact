@@ -20,6 +20,10 @@ label {
     width: 90%;
 }
 
+.saved {
+    border-style: none !important;
+}
+
 .list-group .list-group-item {
     margin-top: 1rem;
     margin-bottom: 1rem;
@@ -29,4 +33,11 @@ label {
 
 a {
     color: black;
+}
+
+textarea {
+    width: 85%;
+}
+.form-control {
+    margin-top: 1rem;
 }

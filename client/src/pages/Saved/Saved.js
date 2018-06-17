@@ -1,34 +1,47 @@
 import React, { Component } from "react";
-import Jumbotron from "../../components/Jumbotron";
 import API from "../../utils/API";
 import DeleteBtn from "../../components/DeleteBtn";
-import { Col, Row, Container } from "../../components/Grid";
+import { Container } from "../../components/Grid";
 import "../Home/Articles.css";
 import Card from "../../components/Card";
+import { TextArea } from "../../components/Form";
 
 class Saved extends Component {
   state = {
     savedArticles: []
   };
 
-  // componentDidMount() {
-  //   this.loadBooks();
-  // }
+  componentDidMount() {
+    this.loadArticles();
+  };
 
-  // loadBooks = () => {
-  //   API.getBooks()
-  //     .then(res => this.setState({ books: res.data }))
-  //     .catch(err => console.log(err));
-  // };
+  loadArticles = () => {
+    API.getArticles()
+      .then(res => this.setState({ savedArticles: res.data }))
+      .catch(err => console.log(err));
+  };
+
+  removeArticle = (id) => {
+    console.log(id);
+    API.deleteArticle(id)
+      .then(res => this.loadArticles())
+      .catch(err => console.log(err));
+  };
 
   render() {
     return (
       <Container fluid>
-       <Card header="Saved Articles">
+        <Card header="Saved Articles">
           <Container fluid>
             <ul className="list-group">
-              {/* Wrap this li component in map function for each article found and pass the article ids to save button */}
-              <li className="list-group-item">Cras justo odio <DeleteBtn/></li>
+
+              {this.state.savedArticles.map((savedArticles) => (
+                <li className="list-group-item saved" key={savedArticles._id}><a href={savedArticles.url}>{savedArticles.headline}</a> <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date saved: {savedArticles.savedOn.slice(0, 10)}</span><DeleteBtn
+                   onClick={() => this.removeArticle(savedArticles._id)}
+                />
+                  <TextArea value={savedArticles.snippet} readOnly={true} />
+                </li>
+              ))}
             </ul>
           </Container>
         </Card>
