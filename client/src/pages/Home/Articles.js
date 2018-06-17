@@ -9,17 +9,36 @@ import Card from "../../components/Card";
 
 class Articles extends Component {
   state = {
+    searchTerm:"",
+    startYear:"",
+    endYear:"",
     articles: []
   };
 
-  // componentDidMount() {
-  //   this.loadBooks();
-  // }
+  componentDidMount() {
+    this.loadArticles();
+  }
 
   loadArticles = () => {
     API.getArticles()
       .then(res => this.setState({ articles: res.data }))
       .catch(err => console.log(err));
+  };
+
+  handleInputChange = event => {
+    const { name, value } = event.target;
+    this.setState({
+      [name]: value
+    });
+  };
+
+  handleFormSubmit = event => {
+    event.preventDefault();
+    if (this.state.searchTerm && this.state.startYear && this.state.endYear) {
+      API.getArticles(this.state.searchTerm, this.state.startYear, this.state.endYear)
+        .then(res => this.loadArticles())
+        .catch(err => console.log(err));
+    }
   };
 
   render() {
@@ -33,12 +52,35 @@ class Articles extends Component {
           <Container fluid>
             <form>
               <label>Title</label>
-              <Input name="title" placeholder="Title (required)" />
+              <Input 
+              value={this.state.searchTerm}
+              onChange={this.handleInputChange}
+              type="text"
+              name="searchTerm" 
+              placeholder="searchTerm (required)"
+              />
               <label>Start Year</label>
-              <Input name="startYear" placeholder="Start Year (required)" />
+              <Input
+              value={this.state.startYear}
+              onChange={this.handleInputChange}
+              type="text"
+              name="startYear" 
+              placeholder="Start Year (required)"
+              />
               <label>End Year</label>
-              <Input name="endYear" placeholder="End Year (required)" />
-              <FormBtn>Search</FormBtn>
+              <Input 
+              value={this.state.endYear}
+              onChange={this.handleInputChange}
+              type="text"
+              name="endYear" 
+              placeholder="End Year (required)"
+              />
+              <FormBtn
+              disabled={!(this.state.searchTerm && this.state.startYear && this.state.endYear)}
+              onClick={this.handleFormSubmit}
+              >
+              Search
+              </FormBtn>
             </form>
           </Container>
         </Card>
@@ -46,7 +88,9 @@ class Articles extends Component {
           <Container fluid>
             <ul className="list-group list-group-flush">
               {/* Wrap this li component in map function for each article found and pass the article ids to save button */}
-              <li className="list-group-item">Cras justo odio <SaveBtn> Save </SaveBtn></li>
+              {this.state.articles.map(article =>(
+              <li className="list-group-item">{article.headline} <SaveBtn> Save </SaveBtn></li>
+            ))}
             </ul>
           </Container>
         </Card>

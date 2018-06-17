@@ -1,7 +1,19 @@
 const router = require("express").Router();
+const request = require("request");
 
-// router.get("/search", function(req, res){("https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=005ffad83ef24e5aa4a4232b7c24957b&q=" + "req.body.searchTerm" + "&begin_date=" + "req.body.startYear" + "0101" + "&end_date=" + "req.body.endYear" + "0101")
-//     .then((data) => res.json(data))
-//     .catch(err => res.status(422).json(err));
+router.get("/search/:searchTerm/:startYear/:endYear", function (req, res) {
+
+    request("https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=005ffad83ef24e5aa4a4232b7c24957b&q=" + req.params.searchTerm + "&begin_date=" + req.params.startYear + "0101" + "&end_date=" + req.params.endYear + "0101", function (error, response, body) {
+        if (!error && response.statusCode === 200) {
+            const found = JSON.parse(body);
+            res.json(found);
+            console.log(found);
+        } else {
+            console.log(error);
+            zipData = {};
+        };
+    });
+
+});
 
 module.exports = router;
