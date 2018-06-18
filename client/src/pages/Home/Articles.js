@@ -95,7 +95,7 @@ class Articles extends Component {
           <Container fluid>
             <ul className="list-group">
               {this.state.articles.map((article, index) => (
-                <li className="list-group-item" key={index}><a href={article.web_url}>{article.headline.main}</a> <SaveBtn
+                <li className="list-group-item" key={index}><a href={article.web_url}>{article.headline.main}</a> <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date Published: {article.pub_date.slice(0, 10)}</span> <SaveBtn
                   data-headline={article.headline.main}
                   data-date={article.pub_date}
                   data-url={article.web_url}
