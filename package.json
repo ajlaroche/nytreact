@@ -1,7 +1,7 @@
 {
-  "name": "mern",
+  "name": "nytreact",
   "version": "1.0.0",
-  "description": "Mern Demo",
+  "description": "NY Times Article Scrubber",
   "main": "server.js",
   "scripts": {
     "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
