@@ -11,9 +11,10 @@ class Saved extends Component {
     savedArticles: []
   };
 
+ 
   componentDidMount() {
     this.loadArticles();
-  };
+      };
 
   loadArticles = () => {
     API.getArticles()
@@ -37,7 +38,7 @@ class Saved extends Component {
 
               {this.state.savedArticles.map((savedArticles) => (
                 <li className="list-group-item saved" key={savedArticles._id}><a href={savedArticles.url}>{savedArticles.headline}</a> <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date saved: {savedArticles.savedOn.slice(0, 10)}</span><DeleteBtn
-                   onClick={() => this.removeArticle(savedArticles._id)}
+                  onClick={() => this.removeArticle(savedArticles._id)}
                 />
                   <TextArea value={savedArticles.snippet} readOnly={true} />
                 </li>
